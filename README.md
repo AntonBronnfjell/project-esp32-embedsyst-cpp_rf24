@@ -1,4 +1,16 @@
 <!-- markdownlint-disable MD041 MD034 -->
+
+## ESP32 (ESP-IDF) adaptation
+
+This fork is **RF24 adapted for ESP32 (ESP-IDF)**. Use it as an ESP-IDF component (e.g. in `components/RF24`).
+
+- **Used by:** [project-esp32-embedsyst-cpp_ble-jammer-nrf24l01](https://github.com/AntonBronnfjell/project-esp32-embedsyst-cpp_ble-jammer-nrf24l01) (included as submodule).
+- **Original:** [nRF24/RF24](https://github.com/nRF24/RF24).
+
+ESP-IDF–specific code is in **utility/esp_idf/**; the root `CMakeLists.txt` registers as component `RF24` when built under ESP-IDF.
+
+---
+
 [![Arduino CLI build](https://github.com/nRF24/RF24/actions/workflows/build_arduino.yml/badge.svg)](https://github.com/nRF24/RF24/actions/workflows/build_arduino.yml)
 [![Linux build](https://github.com/nRF24/RF24/actions/workflows/build_linux.yml/badge.svg)](https://github.com/nRF24/RF24/actions/workflows/build_linux.yml)
 [![PlatformIO build](https://github.com/nRF24/RF24/actions/workflows/build_platformIO.yml/badge.svg)](https://github.com/nRF24/RF24/actions/workflows/build_platformIO.yml)

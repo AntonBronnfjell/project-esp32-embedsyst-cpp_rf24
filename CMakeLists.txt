@@ -1,3 +1,15 @@
+# ESP-IDF component build (when used as components/RF24 in an ESP-IDF project)
+if(DEFINED IDF_VER)
+    idf_component_register(SRCS "RF24.cpp"
+        "utility/esp_idf/spi.cpp"
+        "utility/esp_idf/gpio.cpp"
+        "utility/esp_idf/compatibility.cpp"
+        "utility/esp_idf/interrupt.cpp"
+        INCLUDE_DIRS "." "utility"
+        REQUIRES driver esp_timer freertos)
+    return()
+endif()
+
 # Check if we are building a pico-sdk based project
 # (or more exactly: if we just got included in a pico-sdk based project)
 if (PICO_SDK_PATH)
