@@ -1,5 +1,7 @@
 # ESP-IDF component build (when used as components/RF24 in an ESP-IDF project)
 if(DEFINED IDF_VER)
+    # RF24_config.h includes "utility/includes.h"; copy esp_idf driver includes there
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/utility/esp_idf/includes.h ${CMAKE_CURRENT_LIST_DIR}/utility/includes.h COPYONLY)
     idf_component_register(SRCS "RF24.cpp"
         "utility/esp_idf/spi.cpp"
         "utility/esp_idf/gpio.cpp"
