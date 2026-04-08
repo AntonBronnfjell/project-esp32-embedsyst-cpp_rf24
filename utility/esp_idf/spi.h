@@ -36,7 +36,8 @@ private:
     bool _initialized;
     spi_device_handle_t _handle;
 
-    void init();
+    /** @return true if bus + device were added successfully */
+    bool init();
 };
 
 /** Type alias for internal use (default instance). */

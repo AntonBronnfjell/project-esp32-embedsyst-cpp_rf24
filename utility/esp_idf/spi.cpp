@@ -39,8 +39,9 @@ void SPI::begin(int sck, int miso, int mosi, int csn_pin, uint32_t spi_speed)
     _mosi = mosi;
     _csn_pin = csn_pin;
     _spi_speed = spi_speed;
-    init();
-    _initialized = true;
+    if (init()) {
+        _initialized = true;
+    }
 }
 
 void SPI::begin()
@@ -51,11 +52,12 @@ void SPI::begin()
     if (_sck < 0 || _miso < 0 || _mosi < 0 || _csn_pin < 0) {
         return;
     }
-    init();
-    _initialized = true;
+    if (init()) {
+        _initialized = true;
+    }
 }
 
-void SPI::init()
+bool SPI::init()
 {
     spi_bus_config_t bus_cfg = {};
     bus_cfg.mosi_io_num = _mosi;
@@ -68,21 +70,23 @@ void SPI::init()
     esp_err_t ret = spi_bus_initialize(_host, &bus_cfg, SPI_DMA_DISABLED);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "spi_bus_initialize failed: %s", esp_err_to_name(ret));
-        return;
+        return false;
     }
 
     spi_device_interface_config_t dev_cfg = {};
     dev_cfg.clock_speed_hz = (int)_spi_speed;
     dev_cfg.mode = 0;
-    dev_cfg.spics_io_num = _csn_pin;
+    /* RF24::csn() drives CSN via GPIO; do not use HW CS or the pin is double-driven. */
+    dev_cfg.spics_io_num = -1;
     dev_cfg.queue_size = 1;
 
     ret = spi_bus_add_device(_host, &dev_cfg, &_handle);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "spi_bus_add_device failed: %s", esp_err_to_name(ret));
         spi_bus_free(_host);
-        return;
+        return false;
     }
+    return true;
 }
 
 uint8_t SPI::transfer(uint8_t tx)
