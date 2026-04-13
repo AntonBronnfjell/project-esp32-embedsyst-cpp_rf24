@@ -26,6 +26,13 @@ public:
     void transfernb(char* txBuf, char* rxBuf, uint32_t len);
     void transfern(char* buf, uint32_t len);
 
+    /**
+     * Low-level nRF24 register read (same framing as RF24::read_register), CSN held low for both bytes.
+     * Use after failed radio.begin() to see if the transceiver answers on SPI (wiring / power / dead chip).
+     * @return false if SPI was not initialized
+     */
+    bool readNrf24Register(uint8_t reg, uint8_t* status_out, uint8_t* value_out);
+
 private:
     spi_host_device_t _host;
     int _sck;
